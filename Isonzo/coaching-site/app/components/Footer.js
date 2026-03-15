@@ -5,7 +5,7 @@ export default function Footer() {
 
         {/* Brand */}
         <div>
-          <h2 className="text-2xl font-bold mb-4">Praveen Coaching</h2>
+          <h2 className="text-2xl font-bold mb-4">Ant Learning Hub</h2>
           <p className="text-gray-400">
             Helping individuals and organizations grow through clarity,
             leadership, and purposeful action.
@@ -28,14 +28,14 @@ export default function Footer() {
         <div>
           <h3 className="text-lg font-semibold mb-4">Contact</h3>
 
-          <p className="text-gray-400">Email: info@example.com</p>
-          <p className="text-gray-400">Phone: +91 XXXXX XXXXX</p>
+          <p className="text-gray-400">Email:coachpraveenjp@gmail.com</p>
+          <p className="text-gray-400">Phone: +91 98451 21178</p>
         </div>
 
       </div>
 
       <div className="text-center text-gray-500 mt-10 text-sm">
-        © {new Date().getFullYear()} Praveen Coaching. All rights reserved.
+        © {new Date().getFullYear()} Ant Learning Hub. All rights reserved.
       </div>
     </footer>
   );

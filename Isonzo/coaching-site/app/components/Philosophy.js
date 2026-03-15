@@ -32,39 +32,51 @@ export default function Philosophy() {
   ];
 
   return (
-    <section className="py-28 px-8 bg-gradient-to-b from-gray-50 to-white">
+    <section className="py-16 md:py-20 px-6md:px-10 bg-gradient-to-b from-gray-50 to-white">
       <div className="max-w-7xl mx-auto text-center">
 
-        <h2 className="text-4xl font-bold mb-4">
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-500">
           Coaching Philosophy
         </h2>
 
-        <p className="text-gray-600 max-w-2xl mx-auto mb-16">
+        <p className="text-gray-700 max-w-2xl mx-auto mb-14 md:mb-16">
           A structured approach designed to create sustainable personal and
           professional growth.
         </p>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
 
           {pillars.map((pillar, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 group"
+              initial={{ opacity: 0, y: 40, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{
+                duration: 0.5,
+                delay: index * 0.15,
+                type: "spring",
+                stiffness: 80,
+              }}
+              className="bg-white p-7 md:p-8 rounded-2xl shadow-md hover:shadow-xl transition duration-300 group"
             >
-              <div className="text-teal-500 mb-6 flex justify-center group-hover:scale-110 transition">
+
+              {/* Icon */}
+              <div className="text-teal-500 mb-5 flex justify-center transform group-hover:scale-110 transition">
                 {pillar.icon}
               </div>
 
-              <h3 className="text-xl font-semibold mb-4">
+              {/* Title */}
+              <h3 className="text-gray-400 md:text-xl font-semibold mb-3">
                 {pillar.title}
               </h3>
 
-              <p className="text-gray-900 text-sm leading-relaxed">
+              {/* Description */}
+              <p className="text-gray-700 text-sm leading-relaxed">
                 {pillar.description}
               </p>
+
             </motion.div>
           ))}
 
