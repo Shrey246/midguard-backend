@@ -1,5 +1,6 @@
 const { verifyToken } = require('../utils/jwt');
 const { BlacklistedToken } = require('../models');
+const { hashToken } = require('../utils/tokenHash');
 
 const authGuard = async (req, res, next) => {
   try {
@@ -15,9 +16,11 @@ const authGuard = async (req, res, next) => {
     const token = authHeader.split(' ')[1];
 
     // 🔥 First check blacklist (faster fail)
-    const isBlacklisted = await BlacklistedToken.findOne({
-      where: { token }
-    });
+    const hashedToken = hashToken(token);
+
+      const isBlacklisted = await BlacklistedToken.findOne({
+        where: { token: hashedToken }
+      });
 
     if (isBlacklisted) {
       return res.status(401).json({
