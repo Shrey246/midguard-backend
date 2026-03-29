@@ -1,9 +1,10 @@
 // Add this model
 const BlacklistedToken = sequelize.define("BlacklistedToken", {
   token: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-    unique: true
+  type: DataTypes.STRING(512),
+  allowNull: false,
+  unique: true
+}
   },
   expiresAt: {
     type: DataTypes.DATE,
