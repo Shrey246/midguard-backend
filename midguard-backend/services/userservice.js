@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 const notificationService = require("./notificationservice");
 const jwt = require("jsonwebtoken");
 const { BlacklistedToken } = require("../models");
+const { hashToken } = require("../utils/tokenHash");
 
 /**
  * Generate base username from full name
@@ -182,9 +183,12 @@ const logoutUser = async (token) => {
     throw new Error("Invalid token");
   }
 
+  // ✅ HASH TOKEN HERE
+  const hashedToken = hashToken(token);
+
   await BlacklistedToken.create({
-    token,
-    expiresAt: new Date(decoded.exp * 1000)
+    token: hashedToken, // ✅ FIXED
+    expires_at: new Date(decoded.exp * 1000) // ✅ FIXED
   });
 
   return true;
