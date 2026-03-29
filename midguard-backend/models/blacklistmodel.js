@@ -6,7 +6,7 @@ const BlacklistedToken = sequelize.define("BlacklistedToken", {
   unique: true
 }
   },
-  expiresAt: {
+  expires_at: {
     type: DataTypes.DATE,
     allowNull: false
   }
