@@ -1,4 +1,11 @@
 {
+  "name": "midguard-backend",
+  "version": "1.0.0",
+  "description": "MidGuard backend service",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
   "dependencies": {
     "axios": "^1.13.6",
     "bcrypt": "^6.0.0",
