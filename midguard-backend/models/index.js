@@ -63,9 +63,9 @@ const AdminLog = AdminLogModel(sequelize, DataTypes);
 // ================= BLACKLIST MODEL =================
 const BlacklistedToken = sequelize.define("BlacklistedToken", {
   token: {
-    type: DataTypes.STRING(512),
+    type: DataTypes.STRING(64), // ✅ changed from 512 → 64 (SHA256 hash)
     allowNull: false,
-    unique: true
+    unique: true // ✅ keep this OR index, not both
   },
   expires_at: {
     type: DataTypes.DATE,
@@ -77,8 +77,8 @@ const BlacklistedToken = sequelize.define("BlacklistedToken", {
   createdAt: "created_at",
   updatedAt: false,
   indexes: [
-    { fields: ["token"] },
-    { fields: ["expires_at"] }
+    // ❌ REMOVE token index (already handled by unique)
+    { fields: ["expires_at"] } // ✅ keep this
   ]
 });
 // ================= ASSOCIATIONS =================
