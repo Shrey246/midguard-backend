@@ -1,29 +1,22 @@
 const { Sequelize, DataTypes, Op } = require('sequelize');
 
 // 🔧 DB CONFIG
-const sequelize = new Sequelize(
-  'midguard-final',
-  'root',
-  '',
-  {
-    host: 'localhost',
-    dialect: 'mysql',
-    port: 3306,
-    logging: false,
+const sequelize = new Sequelize(process.env.MYSQL_URL, {
+  dialect: 'mysql',
+  logging: false,
 
-    define: {
-      freezeTableName: true,
-      underscored: true
-    },
+  define: {
+    freezeTableName: true,
+    underscored: true
+  },
 
-    pool: {
-      max: 10,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
-    }
+  pool: {
+    max: 10,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
   }
-);
+});
 
 // ================= IMPORT MODELS =================
 const UserModel = require('./user');
