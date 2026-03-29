@@ -10,10 +10,20 @@ const express = require('express');
 const app = express();
 const cors = require("cors");
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: function (origin, callback) {
+    const allowed = [
+      "http://localhost:3000",
+      "https://midguard-frontend-production.up.railway.app"
+    ];
+
+    if (!origin || allowed.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true
 }));
-
 // ===== Middleware =====
 app.use(express.json()); // parse JSON bodies
 
