@@ -19,6 +19,8 @@
     "node-cron": "^4.2.1",
     "sequelize": "^6.37.7",
     "ulid": "^3.0.2",
-    "uuid": "^13.0.0"
+    "uuid": "^13.0.0",
+    "cloudinary": "^1.41.0",
+    "multer-storage-cloudinary": "^4.0.0"
   }
 }
