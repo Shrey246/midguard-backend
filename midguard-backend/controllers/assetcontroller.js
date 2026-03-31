@@ -1,4 +1,4 @@
-const AssetService = require('../services/assetservice');
+const AssetService = require("../services/assetservice");
 
 class AssetController {
 
@@ -7,38 +7,63 @@ class AssetController {
     try {
       const uploaderPublicId = req.user.publicId;
 
-      // 🚨 Safety check
+      // 🚨 File check
       if (!req.file) {
         return res.status(400).json({
           success: false,
-          error: "No file uploaded"
+          error: "No file uploaded",
+        });
+      }
+
+      // 🚨 Required fields check
+      const { context_type, context_id, purpose } = req.body;
+
+      if (!context_type || !context_id) {
+        return res.status(400).json({
+          success: false,
+          error: "context_type and context_id are required",
+        });
+      }
+
+      // 🔍 DEBUG (remove later if needed)
+      console.log("UPLOAD FILE:", req.file);
+
+      // ✅ Cloudinary v2 uses "path"
+      const fileUrl = req.file.path || req.file.url;
+
+      if (!fileUrl) {
+        return res.status(500).json({
+          success: false,
+          error: "File upload failed (no URL returned)",
         });
       }
 
       const asset = await AssetService.createAsset({
         uploaderPublicId,
-        contextType: req.body.context_type,
-        contextId: req.body.context_id,
-        purpose: req.body.purpose,
+        contextType: context_type,
+        contextId: context_id,
+        purpose: purpose || null,
 
-        // ✅ Cloudinary URL
-        fileUrl: req.file.path,
+        fileUrl,
 
         fileType: req.file.mimetype,
         fileSize: req.file.size,
-        isPrimary: req.body.is_primary || false,
+
+        // ⚠️ Convert string → boolean properly
+        isPrimary: req.body.is_primary === "true" || req.body.is_primary === true,
       });
 
       return res.status(201).json({
         success: true,
-        asset
+        asset,
       });
 
     } catch (err) {
       console.error("ASSET UPLOAD ERROR:", err);
-      return res.status(400).json({
+
+      return res.status(500).json({
         success: false,
-        error: err.message
+        error: err.message || "Internal server error",
       });
     }
   }
@@ -46,17 +71,28 @@ class AssetController {
   // 🔻 Deactivate Asset
   static async deactivate(req, res) {
     try {
-      const asset = await AssetService.deactivateAsset(req.params.assetUid);
+      const { assetUid } = req.params;
+
+      if (!assetUid) {
+        return res.status(400).json({
+          success: false,
+          error: "assetUid is required",
+        });
+      }
+
+      const asset = await AssetService.deactivateAsset(assetUid);
 
       return res.json({
         success: true,
-        asset
+        asset,
       });
 
     } catch (err) {
+      console.error("DEACTIVATE ERROR:", err);
+
       return res.status(400).json({
         success: false,
-        error: err.message
+        error: err.message,
       });
     }
   }
@@ -67,6 +103,13 @@ class AssetController {
       const userPublicId = req.user?.publicId || null;
       const { context_type, context_id } = req.query;
 
+      if (!context_type || !context_id) {
+        return res.status(400).json({
+          success: false,
+          error: "context_type and context_id are required",
+        });
+      }
+
       const assets = await AssetService.getAssetsForContext(
         userPublicId,
         context_type,
@@ -75,13 +118,15 @@ class AssetController {
 
       return res.json({
         success: true,
-        assets
+        assets,
       });
 
     } catch (err) {
+      console.error("GET ASSETS ERROR:", err);
+
       return res.status(403).json({
         success: false,
-        error: err.message
+        error: err.message,
       });
     }
   }

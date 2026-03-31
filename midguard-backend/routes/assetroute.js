@@ -2,14 +2,26 @@ const express = require("express");
 const router = express.Router();
 
 const AssetController = require("../controllers/assetcontroller");
-const upload = require("../utils/uploads"); // multer + cloudinary
-const vanguard = require("../vanguard/auth"); // your auth middleware
+const upload = require("../utils/uploads");
+const vanguard = require("../vanguard/auth");
 
-// 🔼 Upload file
+// 🔼 Upload file (SAFE VERSION)
 router.post(
   "/upload",
   vanguard,
-  upload.single("file"), // ⚠️ field name must match frontend
+  (req, res, next) => {
+    upload.single("file")(req, res, function (err) {
+      if (err) {
+        console.error("UPLOAD MIDDLEWARE ERROR:", err);
+
+        return res.status(500).json({
+          success: false,
+          error: err.message || "File upload failed",
+        });
+      }
+      next();
+    });
+  },
   AssetController.upload
 );
 
