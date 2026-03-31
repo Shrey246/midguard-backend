@@ -74,7 +74,7 @@ app.get('/', (req, res) => {
 
 const { sequelize } = require('./models');
 
-sequelize.sync({ force: true })
+sequelize.sync()
   .then(() => console.log('Models synced ✅'))
   .catch(err => console.error('Sync failed ❌', err));
 
