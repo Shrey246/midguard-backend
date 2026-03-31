@@ -1,11 +1,9 @@
-const cloudinary = require("cloudinary");
+const cloudinary = require("cloudinary").v2;
 
-// ✅ configure using v2 API
-cloudinary.v2.config({
+cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_API_KEY,
   api_secret: process.env.CLOUD_API_SECRET,
 });
 
-// ✅ export FULL object (not .v2)
-module.exports = cloudinary;
+module.exports = cloudinary; // ✅ now correct
