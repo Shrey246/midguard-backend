@@ -1,8 +1,9 @@
 const multer = require("multer");
 const cloudinary = require("./cloudinary");
 
-// ✅ FIX: correct import
-const storage = new (require("multer-storage-cloudinary").CloudinaryStorage)({
+const CloudinaryStorage = require("multer-storage-cloudinary");
+
+const storage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: "midguard",
