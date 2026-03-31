@@ -29,7 +29,7 @@ class AssetController {
       console.log("UPLOAD FILE:", req.file);
 
       // ✅ Cloudinary v2 uses "path"
-      const fileUrl = req.file.path || req.file.url;
+      const fileUrl = req.file.secure_url || req.file.url || req.file.path;;
 
       if (!fileUrl) {
         return res.status(500).json({
@@ -47,7 +47,7 @@ class AssetController {
         fileUrl,
 
         fileType: req.file.mimetype,
-        fileSize: req.file.size,
+        fileSize: req.file.bytes,
 
         // ⚠️ Convert string → boolean properly
         isPrimary: req.body.is_primary === "true" || req.body.is_primary === true,
