@@ -3,7 +3,7 @@ const router = express.Router();
 
 const AssetController = require("../controllers/assetcontroller");
 const upload = require("../utils/uploads");
-const vanguard = require("../vanguard/auth");
+const vanguard = require("../vanguard/authguard");
 
 // 🔼 Upload file (SAFE VERSION)
 router.post(
