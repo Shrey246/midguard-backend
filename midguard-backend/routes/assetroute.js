@@ -1,43 +1,30 @@
-const { Asset } = require("../models");
+const express = require("express");
+const router = express.Router();
 
-exports.upload = async (req, res) => {
-  try {
-    // 🔴 Check file exists
-    if (!req.file) {
-      return res.status(400).json({
-        success: false,
-        message: "No file uploaded",
-      });
-    }
+const AssetController = require("../controllers/assetController");
+const upload = require("../utils/uploads"); // multer + cloudinary
+const vanguard = require("../vanguard/auth"); // your auth middleware
 
-    // ✅ Cloudinary URL (THIS is the key)
-    const fileUrl = req.file.path;
+// 🔼 Upload file
+router.post(
+  "/upload",
+  vanguard,
+  upload.single("file"), // ⚠️ field name must match frontend
+  AssetController.upload
+);
 
-    // 🧠 optional metadata
-    const { contextType, contextId } = req.body;
+// 📦 Get assets by context
+router.get(
+  "/",
+  vanguard,
+  AssetController.getByContext
+);
 
-    // ✅ Save into DB
-    const asset = await Asset.create({
-      url: fileUrl,                 // 🔥 THIS FIXES YOUR ISSUE
-      type: req.file.mimetype,      // optional but useful
-      context_type: contextType || null,
-      context_id: contextId || null,
-      uploaded_by: req.user.publicId, // based on your auth system
-      is_active: true,
-    });
+// 🔻 Deactivate asset
+router.patch(
+  "/:assetUid/deactivate",
+  vanguard,
+  AssetController.deactivate
+);
 
-    return res.status(201).json({
-      success: true,
-      message: "File uploaded successfully",
-      asset,
-    });
-
-  } catch (error) {
-    console.error("ASSET UPLOAD ERROR:", error);
-
-    return res.status(500).json({
-      success: false,
-      message: "Upload failed",
-    });
-  }
-};
+module.exports = router;
