@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const AssetController = require("../controllers/assetController");
+const AssetController = require("../controllers/assetcontroller");
 const upload = require("../utils/uploads"); // multer + cloudinary
 const vanguard = require("../vanguard/auth"); // your auth middleware
 
